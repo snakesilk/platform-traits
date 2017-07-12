@@ -9,7 +9,8 @@
     "test": "mocha './src/**/*-test.js'"
   },
   "dependencies": {
-    "@snakesilk/engine": "^0.8.0"
+    "@snakesilk/engine": "^0.8.0",
+    "three": "0.70"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
