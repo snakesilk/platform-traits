@@ -31,12 +31,11 @@ class Spawn extends Trait
     {
         this._host.events.unbind(condition.event, condition.callback);
     }
-    addItem(event, constr, offset)
+    addItem(event, constr, offset = new Vector3())
     {
-        offset = offset || new Vector3(0, 0, 0);
         this._conditions.push({
             event: event,
-            callback: function() {
+            callback: function dispatchSpawn() {
                 const object = new constr();
                 object.position.copy(this.position);
                 object.position.add(offset);
