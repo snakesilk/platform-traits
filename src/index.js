@@ -17,6 +17,7 @@ module.exports = {
     LightControl: require('./LightControl'),
     Move: require('./Move'),
     Physics: require('./Physics'),
+    Pickupable: require('./Pickupable'),
     Projectile: require('./Projectile'),
     Rotate: require('./Rotate'),
     Solid: require('./Solid'),
