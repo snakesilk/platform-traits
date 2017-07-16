@@ -1,5 +1,6 @@
 module.exports = {
     Attach: require('./Attach'),
+    Blink: require('./Blink'),
     Climbable: require('./Climbable'),
     Climber: require('./Climber'),
     ContactDamage: require('./ContactDamage'),

@@ -6,6 +6,7 @@ const Main = require('..');
 describe('Main export', () => {
   [
     'Attach',
+    'Blink',
     'Climbable',
     'Climber',
     'ContactDamage',
