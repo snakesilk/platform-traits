@@ -3,8 +3,7 @@ const {Easing, Events, Trait, Tween} = require('@snakesilk/engine');
 
 class Light extends Trait
 {
-    constructor()
-    {
+    constructor() {
         super();
         this.NAME = 'light';
 
@@ -15,6 +14,7 @@ class Light extends Trait
 
         this.lamps = [];
     }
+
     __attach(host) {
         super.__attach(host);
 
@@ -37,13 +37,11 @@ class Light extends Trait
         });
     }
 
-    __timeshift()
-    {
+    __timeshift() {
         this._updateDirection();
     }
 
-    _updateDirection()
-    {
+    _updateDirection() {
         const host = this._host;
 
         /* Ensure lights are always in Z front of host no matter rotation. */
@@ -54,8 +52,8 @@ class Light extends Trait
             this.direction.x = host.direction.x;
         }
     }
-    _updateScene()
-    {
+
+    _updateScene() {
         const {world} = this._host;
 
         if (world) {
@@ -67,21 +65,18 @@ class Light extends Trait
         }
     }
 
-    addLamp(light)
-    {
+    addLamp(light) {
         const lamp = new Lamp(light);
         this.lamps.push(lamp);
         return lamp;
     }
 
-    on()
-    {
+    on() {
         this._updateScene();
         this.lamps.forEach(lamp => lamp.start(this._host));
     }
 
-    off()
-    {
+    off() {
         this.lamps.forEach(lamp => lamp.stop(this._host));
     }
 }
