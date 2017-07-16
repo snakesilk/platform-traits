@@ -26,8 +26,7 @@ class Light extends Trait
         /* Ensure lights are always in Z front of host no matter rotation. */
         if (host.direction.x !== this.direction.x) {
             this.lamps.forEach(lamp => {
-                const dist = Math.abs(lamp.light.position.z);
-                lamp.light.position.z = host.direction.x > 0 ? dist : -dist;
+                lamp.setDirection(host.direction.x);
             })
             this.direction.x = host.direction.x;
         }
@@ -95,8 +94,7 @@ class Light extends Trait
 
 class Lamp
 {
-    constructor(light = new SpotLight(0xffffff, 0, 100))
-    {
+    constructor(light = new SpotLight(0xffffff, 0, 100)) {
         this.light = light;
 
         this.easeOn = Easing.easeOutElastic();
@@ -108,6 +106,10 @@ class Lamp
 
         this.light.intensity = 0;
         this.state = false;
+    }
+    setDirection(x) {
+        const dist = Math.abs(this.light.position.z);
+        this.light.position.z = x > 0 ? dist : -dist;
     }
 }
 
