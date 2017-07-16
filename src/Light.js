@@ -47,48 +47,23 @@ class Light extends Trait
             });
         }
     }
-    _startLamp(lamp)
-    {
-        if (lamp.state === true) {
-            return;
-        }
-        lamp.state = true;
-        const tween = new Tween({intensity: lamp.intensity}, lamp.easeOn);
-        tween.addSubject(lamp.light);
-        this._host.doFor(lamp.heatUpTime, (elapsed, progress) => {
-            tween.update(progress);
-        });
-    }
-    _stopLamp(lamp)
-    {
-        if (lamp.state === false) {
-            return;
-        }
-        lamp.state = false;
-        const tween = new Tween({intensity: 0}, lamp.easeOff);
-        tween.addSubject(lamp.light);
-        this._host.doFor(lamp.coolDownTime, (elapsed, progress) => {
-            tween.update(progress);
-        });
-    }
+
     addLamp(light)
     {
         const lamp = new Lamp(light);
         this.lamps.push(lamp);
         return lamp;
     }
+
     on()
     {
         this._updateScene();
-        this.lamps.forEach(lamp => {
-            this._startLamp(lamp);
-        });
+        this.lamps.forEach(lamp => lamp.start(this._host));
     }
+
     off()
     {
-        this.lamps.forEach(lamp => {
-            this._stopLamp(lamp);
-        });
+        this.lamps.forEach(lamp => lamp.stop(this._host));
     }
 }
 
@@ -107,6 +82,33 @@ class Lamp
         this.light.intensity = 0;
         this.state = false;
     }
+
+    start(host) {
+        if (this.state === true) {
+            return;
+        }
+
+        this.state = true;
+        const tween = new Tween({intensity: this.intensity}, this.easeOn);
+        tween.addSubject(this.light);
+        host.doFor(this.heatUpTime, (elapsed, progress) => {
+            tween.update(progress);
+        });
+    }
+
+    stop(host) {
+        if (this.state === false) {
+            return;
+        }
+
+        this.state = false;
+        const tween = new Tween({intensity: 0}, this.easeOff);
+        tween.addSubject(this.light);
+        host.doFor(this.coolDownTime, (elapsed, progress) => {
+            tween.update(progress);
+        });
+    }
+
     setDirection(x) {
         const dist = Math.abs(this.light.position.z);
         this.light.position.z = x > 0 ? dist : -dist;
