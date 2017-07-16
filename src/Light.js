@@ -95,14 +95,9 @@ class Light extends Trait
 
 class Lamp
 {
-    constructor(light)
+    constructor(light = new SpotLight(0xffffff, 0, 100))
     {
-        if (light === undefined) {
-            this.light = new SpotLight(0xffffff, 0, 100);
-        }
-        else {
-            this.light = light;
-        }
+        this.light = light;
 
         this.easeOn = Easing.easeOutElastic();
         this.easeOff = Easing.easeOutQuint();
