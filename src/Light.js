@@ -15,10 +15,33 @@ class Light extends Trait
 
         this.lamps = [];
     }
+    __attach(host) {
+        super.__attach(host);
+
+        const {model} = this._host;
+        this.lamps.forEach(lamp => {
+            model.add(lamp.light);
+            if (lamp.light.target) {
+                model.add(lamp.light.target);
+            }
+        });
+    }
+
+    __detact() {
+        const {model} = this._host;
+        this.lamps.forEach(lamp => {
+            model.remove(lamp.light);
+            if (lamp.light.target) {
+                model.remove(lamp.light.target);
+            }
+        });
+    }
+
     __timeshift()
     {
         this._updateDirection();
     }
+
     _updateDirection()
     {
         const host = this._host;
@@ -33,14 +56,10 @@ class Light extends Trait
     }
     _updateScene()
     {
-        const host = this._host;
-        this.lamps.forEach(lamp => {
-            host.model.remove(lamp.light);
-            host.model.add(lamp.light);
-        });
+        const {world} = this._host;
 
-        if (host.world) {
-            host.world.scene.children.forEach(function(mesh) {
+        if (world) {
+            world.scene.children.forEach(mesh => {
                 if (mesh.material) {
                     mesh.material.needsUpdate = true;
                 }
