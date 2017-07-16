@@ -108,6 +108,29 @@ describe('Blink', function() {
           });
         });
       });
+
+      describe('with interval 0.250 and ratio 0.5', () => {
+        beforeEach(() => {
+          blink.interval = 0.250;
+          blink.ratio = 0.5;
+        });
+
+        it('blinks at a rate of 8 times per second', () => {
+          const step = 1/5000;
+          let seconds = 2;
+          let counter = 0;
+          let last = host.model.visible;
+          while (seconds > 0) {
+            seconds -= step;
+            host.timeShift(step);
+            if (host.model.visible !== last) {
+              ++counter;
+              last = host.model.visible;
+            }
+          }
+          expect(counter).to.be(16);
+        });
+      });
     });
   });
 });
