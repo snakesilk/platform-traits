@@ -15,8 +15,6 @@ class Light extends Trait
 
         this.lamps = [];
         this.threshold = .8;
-        this.easeOn = Easing.easeOutElastic();
-        this.easeOff = Easing.easeOutQuint();
 
         this._nextUpdate = 0;
         this._updateFrequency = 2.5;
@@ -78,7 +76,7 @@ class Light extends Trait
             return;
         }
         lamp.state = true;
-        const tween = new Tween({intensity: lamp.intensity}, this.easeOn);
+        const tween = new Tween({intensity: lamp.intensity}, lamp.easeOn);
         tween.addSubject(lamp.light);
         this._host.doFor(lamp.heatUpTime, (elapsed, progress) => {
             tween.update(progress);
@@ -90,7 +88,7 @@ class Light extends Trait
             return;
         }
         lamp.state = false;
-        const tween = new Tween({intensity: 0}, this.easeOff);
+        const tween = new Tween({intensity: 0}, lamp.easeOff);
         tween.addSubject(lamp.light);
         this._host.doFor(lamp.coolDownTime, (elapsed, progress) => {
             tween.update(progress);
@@ -127,6 +125,9 @@ class Lamp
         else {
             this.light = light;
         }
+
+        this.easeOn = Easing.easeOutElastic();
+        this.easeOff = Easing.easeOutQuint();
 
         this.coolDownTime = 1;
         this.heatUpTime = .8;
