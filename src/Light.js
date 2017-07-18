@@ -6,12 +6,7 @@ class Light extends Trait
     constructor() {
         super();
         this.NAME = 'light';
-
-        this.EVENT_LAMP_CHANGE = 'lamp_change';
-
         this.direction = new Vector2();
-        this.events = new Events();
-
         this.lamps = [];
     }
 
@@ -19,20 +14,20 @@ class Light extends Trait
         super.__attach(host);
 
         const {model} = this._host;
-        this.lamps.forEach(lamp => {
-            model.add(lamp.light);
-            if (lamp.light.target) {
-                model.add(lamp.light.target);
+        this.lamps.forEach(({light}) => {
+            model.add(light);
+            if (light.target) {
+                model.add(light.target);
             }
         });
     }
 
-    __detact() {
+    __detach() {
         const {model} = this._host;
-        this.lamps.forEach(lamp => {
-            model.remove(lamp.light);
-            if (lamp.light.target) {
-                model.remove(lamp.light.target);
+        this.lamps.forEach(({light}) => {
+            model.remove(light);
+            if (light.target) {
+                model.remove(light.target);
             }
         });
     }
@@ -65,10 +60,8 @@ class Light extends Trait
         }
     }
 
-    addLamp(light) {
-        const lamp = new Lamp(light);
+    addLamp(lamp) {
         this.lamps.push(lamp);
-        return lamp;
     }
 
     on() {
@@ -93,6 +86,16 @@ class Lamp
         this.heatUpTime = .8;
         this.intensity = this.light.intensity;
 
+        this.light.intensity = 0;
+        this.state = false;
+    }
+
+    on() {
+        this.light.intensity = this.intensity;
+        this.state = true;
+    }
+
+    off() {
         this.light.intensity = 0;
         this.state = false;
     }
