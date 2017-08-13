@@ -78,7 +78,8 @@ class Jump extends Trait
 
         this._bump.copy(this.force);
         this._bump.x *= host.direction.x;
-        this._host.physics.velocity.add(this._bump);
+        this._host.physics.velocity.x += this._bump.x;
+        this._host.physics.velocity.y += this._bump.y;
         this._elapsed = 0;
 
         /* Immediately express "falling" state on jump. */

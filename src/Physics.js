@@ -1,4 +1,4 @@
-const {Vector2} = require('three');
+const {Vector3} = require('three');
 const {Trait, Util: {readOnly}} = require('@snakesilk/engine');
 
 class Physics extends Trait
@@ -15,11 +15,11 @@ class Physics extends Trait
         this.mass = 0;
 
         readOnly(this, {
-            acceleration: new Vector2(),
-            accelerationDelta: new Vector2(),
-            force: new Vector2(),
-            drag: new Vector2(),
-            velocity: new Vector2(),
+            acceleration: new Vector3(),
+            accelerationDelta: new Vector3(),
+            force: new Vector3(),
+            drag: new Vector3(),
+            velocity: new Vector3(),
         });
     }
     __obstruct(object, attack)
@@ -47,20 +47,19 @@ class Physics extends Trait
             F = this.force,
             m = this.mass;
 
-        F.y -= g.y * m;
+        F.sub(g).multiplyScalar(m);
 
         const Fd = this._calculateDrag();
         F.add(Fd);
         //console.log("Force: %f,%f, Resistance: %f,%f, Result: %f,%f", F.x, F.y, Fd.x, Fd.y, F.x - Fd.x, F.y - Fd.y);
 
-        å.set(F.x / m, F.y / m);
+        å.copy(F).divideScalar(m);
         a.copy(å);
         v.add(a);
 
         this._host.velocity.copy(v);
 
-        F.x = 0;
-        F.y = 0;
+        F.set(0, 0, 0);
     }
     _calculateDrag()
     {
@@ -73,6 +72,7 @@ class Physics extends Trait
            signage removal on v^2 . */
         this.drag.x = -.5 * ρ * Cd * A * v.x * Math.abs(v.x);
         this.drag.y = -.5 * ρ * Cd * A * v.y * Math.abs(v.y);
+        this.drag.z = -.5 * ρ * Cd * A * v.z * Math.abs(v.z);
         return this.drag;
     }
     bump(x, y)
