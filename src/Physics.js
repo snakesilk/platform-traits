@@ -1,5 +1,5 @@
 const {Vector2} = require('three');
-const {Trait} = require('@snakesilk/engine');
+const {Trait, Util: {readOnly}} = require('@snakesilk/engine');
 
 class Physics extends Trait
 {
@@ -14,10 +14,13 @@ class Physics extends Trait
         this.dragCoefficient = .045;
         this.mass = 0;
 
-        this.acceleration = new Vector2();
-        this.accelerationDelta = new Vector2();
-        this.force = new Vector2();
-        this.velocity = new Vector2();
+        readOnly(this, {
+            acceleration: new Vector2(),
+            accelerationDelta: new Vector2(),
+            force: new Vector2(),
+            drag: new Vector2(),
+            velocity: new Vector2(),
+        });
     }
     __obstruct(object, attack)
     {
@@ -68,8 +71,9 @@ class Physics extends Trait
             v = this._host.velocity;
         /* abs value for one velocity component to circumvent
            signage removal on v^2 . */
-        return new Vector2(-.5 * ρ * Cd * A * v.x * Math.abs(v.x),
-                           -.5 * ρ * Cd * A * v.y * Math.abs(v.y));
+        this.drag.x = -.5 * ρ * Cd * A * v.x * Math.abs(v.x);
+        this.drag.y = -.5 * ρ * Cd * A * v.y * Math.abs(v.y);
+        return this.drag;
     }
     bump(x, y)
     {
