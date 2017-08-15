@@ -12,6 +12,7 @@ class Physics extends Trait
         this.area = 0.04;
         this.atmosphericDensity = 1.225;
         this.dragCoefficient = .045;
+        this.friction = 1;
         this.mass = 0;
 
         readOnly(this, {
@@ -24,13 +25,32 @@ class Physics extends Trait
     }
     __obstruct(object, attack)
     {
-        if (attack === object.SURFACE_TOP) {
-            this.velocity.copy(object.velocity);
-        } else if (attack === object.SURFACE_BOTTOM) {
+        switch (attack) {
+        case object.SURFACE_TOP:
+        case object.SURFACE_BOTTOM:
             this.velocity.y = object.velocity.y;
-        } else if (attack === object.SURFACE_LEFT ||
-                   attack === object.SURFACE_RIGHT) {
-            this._host.velocity.x = object.velocity.x;
+            break;
+        case object.SURFACE_LEFT:
+        case object.SURFACE_RIGHT:
+            this.velocity.x = object.velocity.x;
+            break;
+        }
+
+        if (!object.physics) {
+            return;
+        }
+
+        const μ = Math.pow(this.friction * object.physics.friction, 2);
+
+        switch (attack) {
+        case object.SURFACE_TOP:
+        case object.SURFACE_BOTTOM:
+            this.velocity.x -= (this.velocity.x - object.velocity.x) * μ;
+            break;
+        case object.SURFACE_LEFT:
+        case object.SURFACE_RIGHT:
+            this.velocity.y -= (this.velocity.y - object.velocity.y) * μ;
+            break;
         }
     }
     __timeshift(dt)
