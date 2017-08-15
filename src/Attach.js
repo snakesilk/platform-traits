@@ -29,10 +29,10 @@ class Attach extends Trait
 
             /* If we are pushing Crash Bomb from the top or below, just nudge. */
             if (dir === solid.TOP) {
-                our.top = their.bottom;
+                ourZone.top = theirZone.bottom;
             }
             else if (dir === solid.BOTTOM) {
-                our.bottom = their.top;
+                ourZone.bottom = theirZone.top;
             }
             /* If we hit something from left or right, we attach. */
             else {

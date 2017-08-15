@@ -12,8 +12,7 @@ class Environment extends Trait
     __collides(subject)
     {
         if (subject.physics) {
-            p = subject.physics;
-            p.atmosphericDensity = this.atmosphericDensity;
+            subject.physics.atmosphericDensity = this.atmosphericDensity;
         }
 
         subject.timeStretch = this.timeDilation;
