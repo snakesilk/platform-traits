@@ -1,4 +1,4 @@
-const {Vector2} = require('three');
+const {Vector3} = require('three');
 const {Trait} = require('@snakesilk/engine');
 
 class Translate extends Trait
@@ -7,13 +7,15 @@ class Translate extends Trait
     {
         super();
         this.NAME = 'translate';
-        this.velocity = new Vector2(1, 1);
+        this.velocity = new Vector3();
     }
     __timeshift(dt)
     {
-        const pos = this._host.position;
-        pos.x += this.velocity.x * dt;
-        pos.y += this.velocity.y * dt;
+        const p = this._host.position;
+        const v = this.velocity;
+        p.x += v.x * dt;
+        p.y += v.y * dt;
+        p.z += v.z * dt;
     }
 }
 

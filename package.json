@@ -1,7 +1,7 @@
 {
-  "name": "@snakesilk/platform-traits",
-  "version": "0.5.0",
-  "description": "Traits useful for making platform games with Snakesilk Game Engine",
+  "name": "@snakesilk/common-traits",
+  "version": "0.1.0",
+  "description": "Common traits useful for a variety of game types.",
   "license": "MIT",
   "main": "./dist/index.js",
   "scripts": {
