@@ -19,7 +19,6 @@ describe('Translate', function() {
     it('has a velocity', function() {
       expect(translate.velocity.x).to.be.a('number');
       expect(translate.velocity.y).to.be.a('number');
-      expect(translate.velocity.z).to.be.a('number');
     });
 
     describe('when applied', () => {
@@ -33,18 +32,18 @@ describe('Translate', function() {
       });
 
       it('moves host when time updated', function() {
-          host.translate.velocity.set(5, 5, 5);
+          host.translate.velocity.set(5, 5);
           host.timeShift(.5);
-          expect(host.position).to.eql({x: 2.5, y: 2.5, z: 2.5});
+          expect(host.position).to.eql({x: 2.5, y: 2.5, z: 0});
       });
 
       it('honors velocity', function() {
-        host.translate.velocity.set(10, 5, 2);
+        host.translate.velocity.set(10, 5);
         host.timeShift(1);
-        expect(host.position).to.eql({x: 10, y: 5, z: 2});
-        host.translate.velocity.set(-10, 5, 2);
+        expect(host.position).to.eql({x: 10, y: 5, z: 0});
+        host.translate.velocity.set(-10, 5);
         host.timeShift(2);
-        expect(host.position).to.eql({x: -10, y: 15, z: 6});
+        expect(host.position).to.eql({x: -10, y: 15, z: 0});
       });
     });
   });
